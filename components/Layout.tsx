@@ -21,13 +21,13 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
   
   const navItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Inicio' },
-    { id: 'search', icon: Search, label: 'Explorar' },
-    { id: 'library', icon: Library, label: 'Biblioteca' },
+    { id: 'search', icon: Search, label: 'Búsqueda y Catálogos' },
+    { id: 'library', icon: Library, label: 'Mi Biblioteca' },
     { id: 'settings', icon: Settings, label: 'Ajustes' },
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#050505] text-white overflow-hidden selection:bg-primary selection:text-white relative">
+    <div className="flex h-screen w-full text-white overflow-hidden selection:bg-primary selection:text-white relative transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       {/* Background Glows (Global) */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
          <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
@@ -44,7 +44,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
               <BookOpen className="text-white w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight leading-none">Zeepub<span className="text-primary">Bot</span></h1>
+              <h1 className="text-xl font-bold tracking-tight leading-none text-white">Zeepub<span className="text-primary">Bot</span></h1>
               <span className="text-[10px] text-gray-500 font-medium uppercase tracking-widest">v2.4.0 Stable</span>
             </div>
           </div>
@@ -103,7 +103,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
              </div>
              <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-white truncate">Alex Doe</p>
-                <p className="text-[10px] text-primary font-medium truncate uppercase tracking-wider">VIP Member</p>
+                <p className="text-xs text-primary font-medium truncate uppercase tracking-wider">VIP Member</p>
              </div>
              <button className="text-gray-500 hover:text-white transition-colors">
                 <LogOut className="w-4 h-4" />
@@ -121,7 +121,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <BookOpen className="text-white w-5 h-5" />
             </div>
-            <span className="font-bold text-lg">ZeepubBot</span>
+            <span className="font-bold text-lg text-white">ZeepubBot</span>
           </div>
           <button onClick={() => onTabChange('settings')} className="w-8 h-8 rounded-full overflow-hidden border border-white/20">
              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2rcMIxLOx5eu6yRpav3Y8qGpkFD2kC_fFSpyVjNI_zmfvjfPwU7tT0o4IWo8bJUd_Zt_ZE-XvtCRq0VFH6xkeCOZ6RNUSwUMkYvnq49dlaImBSvbx2y0LQ2ZShi-zZJ9SOX46KZQVmAqGJjihqPPZMUyxWkrYEvOQ0wjuaZfwx1Ux3D3P5FEFAo_3D3gvoUpdmv1x-qcgKh0DHSyh9-GHQ9EN3s9kFdAWafA1e_VN0XlAN9MZ3UD7h_56GH1_qsJ9cFtwIf5rKrw" alt="Profile" />

@@ -202,7 +202,7 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
                         checked={settings.theme === 'light'}
                         onChange={() => updateSettings({ theme: 'light' })}
                     />
-                    <div className="h-28 rounded-xl border-2 border-white/10 bg-white flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all opacity-50 cursor-not-allowed grayscale">
+                    <div className="h-28 rounded-xl border-2 border-white/10 bg-white flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary transition-all opacity-100 hover:border-gray-300">
                       <Sun className="text-gray-600 w-6 h-6" />
                       <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">Claro</span>
                     </div>
@@ -290,7 +290,7 @@ export const Settings: React.FC<SettingsProps> = ({ onNavigate }) => {
                                backgroundSize: '10px 10px',
                                backgroundPosition: '0 0, 5px 5px'
                            }}>
-                        <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-white uppercase tracking-widest drop-shadow-md z-10">Vista Previa</div>
+                        <div className="absolute inset-0 flex items-center justify-center text-center text-[10px] font-black text-white uppercase tracking-widest drop-shadow-md z-10 p-1">Vista Previa</div>
                         <div className="w-full h-full transition-colors duration-200" style={{ backgroundColor: settings.primaryColor, opacity: settings.glassOpacity }}></div>
                       </div>
                       <div className="flex flex-col items-center">

@@ -10,12 +10,18 @@ import {
   ArrowRight,
   Download,
   Star,
-  PlayCircle
+  PlayCircle,
+  Library,
+  Settings
 } from 'lucide-react';
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
-    <div className="max-w-[1600px] mx-auto px-4 md:px-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="max-w-[1600px] mx-auto px-4 md:px-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-8">
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
@@ -44,24 +50,28 @@ export const Dashboard: React.FC = () => {
                 placeholder="Busca por título, autor, género o ISBN..." 
                 className="w-full bg-transparent text-white p-4 text-base md:text-lg placeholder-gray-500 focus:outline-none"
               />
-              <button className="hidden sm:flex bg-white/10 hover:bg-white/20 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all border border-white/5 mr-2">
+              <button 
+                onClick={() => onNavigate && onNavigate('search')}
+                className="hidden sm:flex bg-white/10 hover:bg-white/20 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all border border-white/5 mr-2"
+              >
                 Buscar
               </button>
             </div>
           </div>
 
-          {/* Quick Actions Grid */}
+          {/* Quick Actions Grid (Replaces Bottom Nav on Mobile) */}
           <div>
             <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Acciones Rápidas</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { icon: Search, label: 'Explorar', desc: 'Catálogo', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
-                { icon: Shuffle, label: 'Aleatorio', desc: 'Descubrir', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
-                { icon: BookOpen, label: 'Solicitar', desc: 'Pedir Libro', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20' },
-                { icon: HelpCircle, label: 'Soporte', desc: 'Ayuda', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+                { id: 'search', icon: Search, label: 'Catálogo', desc: 'Explorar', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
+                { id: 'library', icon: Library, label: 'Mi Biblioteca', desc: 'Mis Libros', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+                { id: 'requests', icon: BookOpen, label: 'Solicitar', desc: 'Pedir Libro', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20' },
+                { id: 'settings', icon: Settings, label: 'Ajustes', desc: 'Configuración', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
               ].map((item, i) => (
                 <button 
                   key={i}
+                  onClick={() => onNavigate && onNavigate(item.id)}
                   className={`glass-panel p-5 rounded-2xl border ${item.border} flex flex-col items-center justify-center text-center gap-3 hover:scale-[1.02] active:scale-95 transition-all duration-300 group shadow-lg`}
                 >
                   <div className={`p-4 rounded-full ${item.bg} ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(0,0,0,0.3)]`}>
@@ -95,7 +105,7 @@ export const Dashboard: React.FC = () => {
                 { title: 'Atomic Habits', author: 'James Clear', format: 'AUDIO', size: '142 MB', time: 'Ayer', icon: PlayCircle },
               ].map((item, i) => (
                 <div key={i} className="glass-panel p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-all group cursor-pointer flex items-center gap-4 hover:border-primary/30">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[10px] font-black border group-hover:scale-110 transition-transform ${item.format === 'AUDIO' ? 'bg-purple-900/20 text-purple-400 border-purple-500/20' : 'bg-slate-800 text-gray-500 border-white/5'} uppercase tracking-widest`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-[10px] font-black border group-hover:scale-110 transition-transform ${item.format === 'AUDIO' ? 'bg-purple-900/20 text-purple-400 border-purple-500/20' : 'bg-black/20 text-gray-500 border-white/5'} uppercase tracking-widest`}>
                     {item.format === 'AUDIO' ? <PlayCircle className="w-5 h-5" /> : item.format}
                   </div>
                   <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
@@ -179,7 +189,7 @@ export const Dashboard: React.FC = () => {
 
           {/* Continue Reading Widget (Desktop Highlight) */}
           <div className="glass-panel rounded-3xl p-1 border border-white/5 hover:border-primary/30 transition-colors group cursor-pointer">
-             <div className="bg-[#0f1115] rounded-[20px] p-5 relative overflow-hidden">
+             <div className="bg-black/20 rounded-[20px] p-5 relative overflow-hidden">
                 <div className="flex gap-4 items-start relative z-10">
                    <div className="w-16 h-24 rounded-lg bg-gray-800 shadow-lg shrink-0 overflow-hidden border border-white/10">
                       <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNN4FMDg3_CjS9YHw1nGZ4JItWisR_siKFT-hvY-GJOT3ANCaOjoQCqwFNh11csOqbW32AvpUd3Phbg6eYPIP1cbyrpXt4XAJ5x1rTmDvx1HfrlWdNL9tz2sQBRQxq2CrdS0xRfAZAX2X3WVfEQa8OvegVEUvYC-TJQYYqXdwkIMMGBUXkS1tLuXAtXhkVgsobRe0TeyyI-l6mnwT2L91DP17Yr5xN59YJ7Uv7SUGKthHsf4SU3T4F6EJGj-Wji-uzHySrLe079wI" className="w-full h-full object-cover" alt="Cover" />

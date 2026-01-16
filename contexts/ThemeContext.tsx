@@ -40,18 +40,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Apply base font size (simplistic approach for demo)
     root.style.fontSize = `${settings.fontSize}px`;
 
-    // Handle Theme Classes
+    // Handle Theme Classes & Variables
     if (settings.theme === 'light') {
       root.classList.remove('dark');
-      root.style.setProperty('--bg-color', '#f6f6f8');
+      root.style.setProperty('--app-bg', '#f0f2f5');
+      root.style.setProperty('--glass-rgb', '255, 255, 255');
     } else {
       root.classList.add('dark');
+      root.style.setProperty('--glass-rgb', '30, 35, 45');
+      
       if (settings.theme === 'amoled') {
-         // Custom handling for pure black background could go here
-         // For now, we assume 'dark' class handles general dark mode
-         document.body.style.backgroundColor = '#000000';
+         root.style.setProperty('--app-bg', '#000000');
       } else {
-         document.body.style.backgroundColor = ''; // Revert to CSS default
+         // Default Dark
+         root.style.setProperty('--app-bg', '#050505'); 
       }
     }
 

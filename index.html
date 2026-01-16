@@ -69,6 +69,10 @@
         --glass-opacity: 0.6;
         --glass-blur: 12px;
         --glass-border-opacity: 0.08;
+        
+        /* Theme Defaults */
+        --app-bg: #050505;
+        --glass-rgb: 30, 35, 45;
       }
       ::-webkit-scrollbar {
         width: 6px;
@@ -88,11 +92,30 @@
         background: var(--color-primary-dark);
       }
       .glass-panel, .glass-card {
-        background: rgba(30, 35, 45, var(--glass-opacity));
+        background: rgba(var(--glass-rgb), var(--glass-opacity));
         backdrop-filter: blur(var(--glass-blur));
         -webkit-backdrop-filter: blur(var(--glass-blur));
         border: 1px solid rgba(255, 255, 255, var(--glass-border-opacity));
       }
+
+      /* Light Mode Overrides for compatibility */
+      html:not(.dark) .glass-panel, html:not(.dark) .glass-card {
+        border-color: rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.7);
+      }
+      html:not(.dark) .text-white { color: #111827 !important; }
+      html:not(.dark) .text-gray-100 { color: #1f2937 !important; }
+      html:not(.dark) .text-gray-200 { color: #374151 !important; }
+      html:not(.dark) .text-gray-300 { color: #4b5563 !important; }
+      html:not(.dark) .text-gray-400 { color: #6b7280 !important; }
+      html:not(.dark) .text-gray-500 { color: #9ca3af !important; }
+      
+      html:not(.dark) .bg-white\/5 { background-color: rgba(0,0,0,0.05) !important; }
+      html:not(.dark) .bg-white\/10 { background-color: rgba(0,0,0,0.1) !important; }
+      html:not(.dark) .border-white\/5 { border-color: rgba(0,0,0,0.05) !important; }
+      html:not(.dark) .border-white\/10 { border-color: rgba(0,0,0,0.1) !important; }
+      html:not(.dark) .bg-black\/20 { background-color: rgba(0,0,0,0.05) !important; }
+
       /* Toggle Checkbox Custom Styles */
       .toggle-checkbox:checked {
           right: 0;

@@ -10,12 +10,13 @@ import {
   Download, 
   BookOpen, 
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ArrowUp,
-  ArrowDownUp,
-  Calendar,
-  Reply
+  ChevronLeft, 
+  ChevronRight, 
+  ArrowUp, 
+  ArrowDownUp, 
+  Calendar, 
+  Reply,
+  BookmarkPlus
 } from 'lucide-react';
 import { Series, Volume } from '../types';
 
@@ -84,7 +85,7 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ series, onBack, onSe
     <div className="flex-1 flex flex-col min-h-0 relative font-sans text-gray-100">
       
       {/* Mobile Header */}
-      <header className="md:hidden h-16 bg-[#050505]/80 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 shrink-0 z-40 sticky top-0">
+      <header className="md:hidden h-16 bg-background/80 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 shrink-0 z-40 sticky top-0">
         <span className="font-bold text-lg">Zeepub<span className="text-primary">Bot</span></span>
         <button onClick={onBack} className="text-gray-400 hover:text-primary">
           <ArrowLeft className="w-6 h-6" />
@@ -99,7 +100,7 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ series, onBack, onSe
         ></div>
         
         {/* Gradients for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-[#050505]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
         
         <div className="absolute bottom-0 w-full px-4 sm:px-6 lg:px-8 pb-8 z-20">
@@ -164,7 +165,7 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ series, onBack, onSe
               <div 
                 key={vol.id} 
                 onClick={() => onSelectVolume(vol)}
-                className="group relative flex gap-4 p-4 rounded-xl border border-white/5 bg-[#0b0d10] hover:bg-[#12151a] hover:border-[#2AABEE]/30 transition-all duration-200 cursor-pointer overflow-hidden"
+                className="group relative flex gap-4 p-4 rounded-xl border border-white/5 glass-panel hover:bg-white/5 hover:border-[#2AABEE]/30 transition-all duration-200 cursor-pointer overflow-hidden"
               >
                 {/* Image */}
                 <div className="shrink-0 w-24 sm:w-28 aspect-[2/3] bg-slate-800 rounded-lg overflow-hidden shadow-lg border border-white/5">
@@ -216,9 +217,13 @@ export const SeriesDetail: React.FC<SeriesDetailProps> = ({ series, onBack, onSe
                             DESCARGAR
                         </button>
                         
-                        <span className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-400 text-[10px] font-bold uppercase tracking-wider">
-                            {series.type || 'NOVELA LIGERA'}
-                        </span>
+                        <button 
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400 text-xs font-bold hover:text-white hover:bg-white/10 transition-all"
+                            onClick={(e) => { e.stopPropagation(); /* Add logic */ }}
+                        >
+                            <BookmarkPlus className="w-3.5 h-3.5" />
+                            BIBLIOTECA
+                        </button>
                     </div>
 
                 </div>

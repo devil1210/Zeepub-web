@@ -5,9 +5,9 @@ export const Reader: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [progress, setProgress] = useState(32);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#111111] text-gray-300 flex flex-col font-serif">
+    <div className="fixed inset-0 z-50 bg-background text-gray-300 flex flex-col font-serif">
       {/* HUD Header */}
-      <header className="fixed top-0 w-full z-50 px-6 h-16 flex items-center justify-between bg-[#1c1c1e]/90 backdrop-blur border-b border-white/10 transition-transform duration-300">
+      <header className="fixed top-0 w-full z-50 px-6 h-16 flex items-center justify-between glass-panel border-b border-white/10 transition-transform duration-300">
         <div className="flex items-center gap-4">
           <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
             <ArrowLeft className="w-6 h-6" />
@@ -27,7 +27,7 @@ export const Reader: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto w-full h-full pt-24 pb-24 px-4 sm:px-8 max-w-3xl mx-auto">
-        <div className="prose prose-invert prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none prose-p:text-gray-300 prose-headings:text-white">
           <h2 className="text-3xl font-bold text-white mb-8">How to Build Better Habits in 4 Simple Steps</h2>
           
           <p className="mb-6 leading-loose text-lg">
@@ -53,7 +53,7 @@ export const Reader: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       </main>
 
       {/* HUD Footer */}
-      <footer className="fixed bottom-0 w-full z-50 px-6 py-4 bg-[#1c1c1e]/90 backdrop-blur border-t border-white/10 font-sans">
+      <footer className="fixed bottom-0 w-full z-50 px-6 py-4 glass-panel border-t border-white/10 font-sans">
         <div className="max-w-4xl mx-auto flex flex-col gap-4">
           <div className="w-full flex items-center gap-4 text-xs font-medium text-gray-400">
             <span>0%</span>

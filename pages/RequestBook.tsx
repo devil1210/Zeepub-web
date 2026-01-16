@@ -4,12 +4,18 @@ import {
   Send, 
   Sparkles, 
   CheckCircle2, 
-  Star 
+  Star,
+  Home,
+  Clock
 } from 'lucide-react';
 
-export const RequestBook: React.FC = () => {
+interface RequestBookProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const RequestBook: React.FC<RequestBookProps> = ({ onNavigate }) => {
   return (
-    <div className="font-sans text-gray-100 min-h-full animate-in fade-in duration-300">
+    <div className="font-sans text-gray-100 min-h-full animate-in fade-in duration-300 pb-24">
       <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
         
         {/* Header */}
@@ -149,6 +155,41 @@ export const RequestBook: React.FC = () => {
         </footer>
 
       </main>
+
+       {/* Floating Bottom Navigation */}
+       <div className="md:hidden fixed bottom-6 left-4 right-4 z-40 animate-in slide-in-from-bottom-4 duration-300">
+        <div className="glass-panel rounded-full p-1 border border-white/10 shadow-2xl bg-[#0f1115]/90 backdrop-blur-md flex items-center justify-between">
+            {/* Home */}
+            <button 
+              onClick={() => onNavigate && onNavigate('dashboard')}
+              className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-l-full hover:bg-white/5 active:bg-white/10 transition-colors group text-gray-400 active:text-white"
+            >
+              <Home className="w-4 h-4 mb-0.5 group-active:-translate-y-1 transition-transform" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Inicio</span>
+            </button>
+            
+            <div className="w-px h-8 bg-white/5"></div>
+
+            {/* History Dummy */}
+            <button 
+              className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-white/5 transition-colors group relative text-gray-400"
+            >
+              <Clock className="w-4 h-4 mb-0.5" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Historial</span>
+            </button>
+            
+            <div className="w-px h-8 bg-white/5"></div>
+
+             {/* Status Dummy */}
+             <button 
+              className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-r-full hover:bg-white/5 active:bg-white/10 transition-colors group text-gray-400 active:text-white"
+            >
+              <Zap className="w-4 h-4 mb-0.5" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Estado</span>
+            </button>
+        </div>
+      </div>
+
     </div>
   );
 };

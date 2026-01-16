@@ -9,6 +9,7 @@ import { Settings } from './pages/Settings';
 import { SeriesDetail } from './pages/SeriesDetail';
 import { BookDetail } from './pages/BookDetail';
 import { RequestBook } from './pages/RequestBook';
+import { Library } from './pages/Library';
 import { Series, Volume } from './types';
 
 const App: React.FC = () => {
@@ -17,18 +18,59 @@ const App: React.FC = () => {
   const [selectedSeries, setSelectedSeries] = useState<Series | null>(null);
   const [selectedVolume, setSelectedVolume] = useState<Volume | null>(null);
 
+  // Helper to construct a mock series/volume for Library items to open BookDetail
+  const handleLibraryBookClick = (bookTitle: string, author: string, cover: string) => {
+      const mockSeries: Series = {
+          id: 'lib-series-1',
+          title: bookTitle,
+          author: author,
+          coverUrl: cover,
+          description: 'Description loaded from library...',
+          genre: 'Fantasy',
+          rating: 5.0,
+          volumesCount: 1,
+          status: 'Ongoing',
+          lastUpdated: 'Hoy',
+          volumes: []
+      };
+      const mockVolume: Volume = {
+          id: 'lib-vol-1',
+          seriesId: 'lib-series-1',
+          title: bookTitle,
+          volumeNumber: 1,
+          coverUrl: cover,
+          publishedDate: '2023',
+          pages: 300,
+          format: 'EPUB',
+          rating: 5.0
+      };
+      setSelectedSeries(mockSeries);
+      setSelectedVolume(mockVolume);
+      setActiveTab('search'); // Re-use the search/detail view logic
+  };
+
+  const handleSearchNavigation = (term: string, type?: string) => {
+    // In a real app, this would set the search query context/state
+    console.log(`Navegando a búsqueda: ${term} [${type}]`);
+    setSelectedVolume(null);
+    setSelectedSeries(null);
+    setActiveTab('search');
+  };
+
   // Simple router logic for SPA/TMA environment
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard onNavigate={setActiveTab} />;
       case 'search':
         if (selectedVolume && selectedSeries) {
           return (
             <BookDetail 
               volume={selectedVolume} 
               series={selectedSeries} 
-              onBack={() => setSelectedVolume(null)} 
+              onBack={() => setSelectedVolume(null)}
+              onSearch={handleSearchNavigation}
+              onNavigate={setActiveTab}
             />
           );
         }
@@ -41,29 +83,17 @@ const App: React.FC = () => {
             />
           );
         }
-        return <Search onSelectSeries={setSelectedSeries} />;
+        return <Search onSelectSeries={setSelectedSeries} onNavigate={setActiveTab} />;
       case 'requests':
-        return <RequestBook />;
+        return <RequestBook onNavigate={setActiveTab} />;
       case 'admin':
         return <Admin onNavigate={setActiveTab} />;
       case 'settings':
         return <Settings onNavigate={setActiveTab} />;
       case 'library':
-        // Reuse Dashboard or create placeholder
-        return (
-          <div className="flex flex-col items-center justify-center h-[50vh] text-center p-8">
-            <h2 className="text-2xl font-bold text-white mb-4">My Library</h2>
-            <p className="text-gray-400 mb-6">Select a book to start reading.</p>
-            <button 
-              onClick={() => setIsReading(true)} 
-              className="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors"
-            >
-              Open Last Read (Atomic Habits)
-            </button>
-          </div>
-        );
+        return <Library onNavigate={setActiveTab} onSelectBook={handleLibraryBookClick} />;
       default:
-        return <Dashboard />;
+        return <Dashboard onNavigate={setActiveTab} />;
     }
   };
 
@@ -71,8 +101,8 @@ const App: React.FC = () => {
     return <Reader onClose={() => setIsReading(false)} />;
   }
 
-  // Hide the global bottom nav when in the 'search' (Catalog), 'settings', or 'admin' tabs
-  const showMobileBottomNav = activeTab !== 'search' && activeTab !== 'settings' && activeTab !== 'admin';
+  // Hide the global bottom nav on Dashboard (cards are used instead), Search (has custom nav), Settings (has custom nav), etc.
+  const showMobileBottomNav = activeTab !== 'dashboard' && activeTab !== 'search' && activeTab !== 'settings' && activeTab !== 'admin' && activeTab !== 'library' && activeTab !== 'requests';
 
   return (
     <ThemeProvider>

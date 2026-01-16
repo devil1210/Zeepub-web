@@ -333,7 +333,7 @@ export const Admin: React.FC<AdminProps> = ({ onNavigate }) => {
                          { icon: Database, title: 'Respaldo del Sistema', desc: 'Exportar snapshot completo de DB.', action: 'RESPALDAR', sec: true },
                          { icon: Eraser, title: 'Limpiar Caché', desc: 'Borrar metadatos temporales.', action: 'PURGAR', sec: true },
                        ].map((item, i) => (
-                          <div key={i} className="p-4 rounded-xl bg-slate-900/40 border border-white/5 hover:border-primary/40 transition-all cursor-pointer group shadow-inner">
+                          <div key={i} className="p-4 rounded-xl bg-black/20 border border-white/5 hover:border-primary/40 transition-all cursor-pointer group shadow-inner">
                              <div className="flex justify-between items-center mb-2">
                                 <h4 className="font-black text-slate-200 text-xs uppercase tracking-tight">{item.title}</h4>
                                 <item.icon className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" />
@@ -341,7 +341,7 @@ export const Admin: React.FC<AdminProps> = ({ onNavigate }) => {
                              <p className="text-[10px] text-gray-500 mb-4 font-medium leading-relaxed">{item.desc}</p>
                              <button className={`w-full py-2.5 rounded-lg text-[10px] font-black tracking-widest transition-all uppercase ${
                                item.sec 
-                                 ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' 
+                                 ? 'bg-white/10 hover:bg-white/20 text-slate-300' 
                                  : 'bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/20'
                              }`}>{item.action}</button>
                           </div>
@@ -350,7 +350,7 @@ export const Admin: React.FC<AdminProps> = ({ onNavigate }) => {
                  </div>
 
                  <div className="lg:col-span-2 glass-panel rounded-2xl overflow-hidden flex flex-col min-h-[500px] border border-white/5">
-                    <div className="p-4 bg-slate-900/60 border-b border-white/5 flex justify-between items-center">
+                    <div className="p-4 bg-black/20 border-b border-white/5 flex justify-between items-center">
                        <h3 className="text-[10px] font-black text-slate-300 flex items-center gap-2 uppercase tracking-widest">
                           <Terminal className="w-4 h-4 text-primary" /> Feed de Logs en Vivo
                        </h3>
@@ -358,7 +358,7 @@ export const Admin: React.FC<AdminProps> = ({ onNavigate }) => {
                           <span className="text-[10px] font-mono text-gray-500">STREAM_TR: ON</span>
                        </div>
                     </div>
-                    <div className="flex-1 bg-[#05080c] p-6 font-mono text-[11px] overflow-y-auto space-y-2 text-gray-400">
+                    <div className="flex-1 bg-black/40 p-6 font-mono text-[11px] overflow-y-auto space-y-2 text-gray-400">
                        <div className="flex gap-4"><span className="text-gray-600 font-bold shrink-0">10:42:01</span> <span className="text-blue-400 font-black shrink-0">INFO</span> <span className="flex-1">Kernel ZeepubBot inicializado con éxito (v2.4.0-web)</span></div>
                        <div className="flex gap-4"><span className="text-gray-600 font-bold shrink-0">10:42:05</span> <span className="text-blue-400 font-black shrink-0">INFO</span> <span className="flex-1">Estableciendo túnel seguro a gateway API... <span className="text-green-500">CONECTADO</span></span></div>
                        <div className="flex gap-4"><span className="text-gray-600 font-bold shrink-0">10:42:06</span> <span className="text-yellow-500 font-black shrink-0">WARN</span> <span className="flex-1">Pico de tráfico de entrada detectado (1,402 req/sec)</span></div>
@@ -398,169 +398,149 @@ export const Admin: React.FC<AdminProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Crystal Tier Cards */}
-            <section className="flex flex-col gap-6">
-              <h2 className="text-xl font-black px-1 flex items-center gap-3 tracking-tighter uppercase text-white">
-                <div className="w-8 h-1 bg-primary rounded-full"></div>
-                Perfiles de Nivel
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                {[
-                  { id: 'basic', name: 'Básico', price: 'Gratis', icon: User, color: 'text-gray-400', limit: 5 },
-                  { id: 'supporter', name: 'Supporter', price: '$5 / Mes', icon: Heart, color: 'text-primary', limit: 20, accent: true },
-                  { id: 'vip', name: 'VIP', price: '$15 / Mes', icon: Gem, color: 'text-purple-400', limit: 'Ilimitado', highlighted: true },
-                  { id: 'legend', name: 'Leyenda', price: '$50 / Mes', icon: Medal, color: 'text-yellow-500', limit: 'Ilimitado' },
-                ].map((tier, i) => (
-                  <div key={tier.id} className={`flex flex-col gap-6 rounded-3xl border ${tier.highlighted ? 'border-primary shadow-[0_10px_40px_rgba(43,108,238,0.15)]' : 'border-white/10'} bg-white/5 p-6 hover:translate-y-[-4px] transition-all group glass-panel relative overflow-hidden`}>
-                    {tier.highlighted && <div className="absolute top-0 right-0 p-1.5 bg-primary text-[8px] font-black text-white px-3 rounded-bl-xl uppercase tracking-widest">Recomendado</div>}
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-black text-white tracking-tighter">{tier.name}</h3>
-                        <p className={`text-[10px] font-black uppercase tracking-widest ${tier.color}`}>{tier.price}</p>
-                      </div>
-                      <tier.icon className={`w-6 h-6 ${tier.color} group-hover:scale-110 transition-transform`} />
+            {/* Tier Cards Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Free Tier */}
+                <div className="glass-panel p-6 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-all">
+                    <div className="absolute top-0 right-0 p-4 opacity-5">
+                        <User className="w-16 h-16 text-gray-400" />
                     </div>
-                    <div className="space-y-4">
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[9px] font-black uppercase tracking-widest text-gray-500">Cuota Diaria DL</label>
-                        <input className="w-full bg-black/20 border border-white/5 rounded-xl text-white text-sm px-4 py-2.5 font-bold focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" type="text" defaultValue={tier.limit}/>
-                      </div>
-                      <div className="space-y-3 pt-2">
-                        <div className="flex justify-between items-center group/toggle cursor-pointer">
-                          <span className="text-xs font-black uppercase tracking-tight text-gray-400 group-hover/toggle:text-white transition-colors">Acceso Anticipado</span>
-                          <div className="w-8 h-4 bg-slate-700 rounded-full relative p-0.5">
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center group/toggle cursor-pointer">
-                          <span className="text-xs font-black uppercase tracking-tight text-gray-400 group-hover/toggle:text-white transition-colors">Temas HD</span>
-                          <div className="w-8 h-4 bg-primary/40 rounded-full relative p-0.5 border border-primary/20">
-                            <div className="w-3 h-3 bg-primary rounded-full ml-auto shadow-[0_0_8px_rgba(43,108,238,0.8)]"></div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Nivel por Defecto</span>
+                        <h3 className="text-2xl font-black text-white mb-4">Gratuito</h3>
+                        <ul className="space-y-2 mb-6">
+                            <li className="flex items-center gap-2 text-xs text-gray-400"><CheckCircle className="w-3 h-3 text-green-500" /> Acceso a Catálogo Público</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-400"><CheckCircle className="w-3 h-3 text-green-500" /> 1 Descarga Diaria</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-400"><Ban className="w-3 h-3 text-red-500" /> Sin Solicitudes</li>
+                        </ul>
+                        <button className="w-full py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold text-white transition-colors border border-white/5">Editar Permisos</button>
                     </div>
-                    <button className={`mt-auto w-full py-3 rounded-xl text-[10px] font-black tracking-widest transition-all uppercase border border-white/5 ${tier.highlighted ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-slate-700 hover:bg-slate-600 text-slate-200'}`}>
-                      Actualizar Config
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </section>
+                </div>
 
-            {/* Crystal User Table */}
-            <div className="glass-panel rounded-3xl overflow-hidden mb-6 border border-white/10 shadow-2xl">
-              <div className="p-8 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-slate-900/40">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-black text-slate-100 uppercase tracking-tight">Registros Activos</h3>
-                  <p className="text-xs text-gray-500 font-medium">Gestionar cuentas individuales y anular permisos.</p>
+                {/* VIP Tier */}
+                <div className="glass-panel p-6 rounded-2xl border border-primary/20 relative overflow-hidden group hover:border-primary/50 transition-all">
+                    <div className="absolute inset-0 bg-primary/5"></div>
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Gem className="w-16 h-16 text-primary" />
+                    </div>
+                    <div className="relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 block">Más Popular</span>
+                        <h3 className="text-2xl font-black text-white mb-4">VIP</h3>
+                        <ul className="space-y-2 mb-6">
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-primary" /> Descargas Ilimitadas</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-primary" /> Solicitudes Prioritarias</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-primary" /> Acceso Anticipado</li>
+                        </ul>
+                        <button className="w-full py-2 rounded-lg bg-primary hover:bg-primary-dark text-xs font-bold text-white transition-colors shadow-lg shadow-primary/20">Configurar</button>
+                    </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="relative group flex-1 sm:flex-none">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
-                    <input className="w-full sm:w-64 pl-10 pr-4 py-2.5 text-xs bg-slate-900/60 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white font-bold transition-all placeholder:text-gray-600" placeholder="Filtrar por ID o Usuario..." type="text" />
-                  </div>
-                  <button className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-white/5 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all shadow-lg">
-                    Filtros
-                  </button>
+
+                {/* Legend Tier */}
+                <div className="glass-panel p-6 rounded-2xl border border-yellow-500/20 relative overflow-hidden group hover:border-yellow-500/50 transition-all">
+                    <div className="absolute inset-0 bg-yellow-500/5"></div>
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Medal className="w-16 h-16 text-yellow-500" />
+                    </div>
+                    <div className="relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-yellow-500 mb-2 block">Supporter</span>
+                        <h3 className="text-2xl font-black text-white mb-4">Leyenda</h3>
+                        <ul className="space-y-2 mb-6">
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-yellow-500" /> Todo lo de VIP</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-yellow-500" /> Insignia de Perfil</li>
+                            <li className="flex items-center gap-2 text-xs text-gray-300"><CheckCircle className="w-3 h-3 text-yellow-500" /> Canal de Soporte Directo</li>
+                        </ul>
+                        <button className="w-full py-2 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-xs font-bold text-yellow-500 border border-yellow-500/20 transition-colors">Configurar</button>
+                    </div>
                 </div>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-slate-900/60 text-[9px] uppercase text-gray-500 font-black tracking-[0.2em]">
-                      <th className="px-8 py-5 border-b border-white/5">ID Registro</th>
-                      <th className="px-8 py-5 border-b border-white/5">Identidad</th>
-                      <th className="px-8 py-5 border-b border-white/5">Nivel de Acceso</th>
-                      <th className="px-8 py-5 border-b border-white/5">Utilización Cuota</th>
-                      <th className="px-8 py-5 border-b border-white/5 text-right">Ops</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {[
-                      { id: '5892104', name: 'Alex_Reader', tier: 'VIP', p: 20, d: '12 / 100', color: 'bg-purple-500' },
-                      { id: '9218401', name: 'BookWorm_99', tier: 'GRATIS', p: 95, d: '9 / 10', color: 'bg-gray-500' },
-                      { id: '1102938', name: 'Elite_Alpha', tier: 'LEYENDA', p: 2, d: '5 / ∞', color: 'bg-yellow-500' },
-                    ].map((user) => (
-                      <tr 
-                        key={user.id}
-                        onClick={() => setSelectedUserId(user.id)}
-                        className="hover:bg-primary/5 transition-all cursor-pointer group"
-                      >
-                        <td className="px-8 py-6 font-mono text-xs text-gray-500 font-bold">#{user.id}</td>
-                        <td className="px-8 py-6">
-                          <div className="flex items-center gap-4">
-                            <div className={`size-10 rounded-2xl ${user.color} flex items-center justify-center text-white font-black text-xs shadow-lg shadow-black/20 group-hover:scale-105 transition-transform border border-white/10`}>{user.name[0]}</div>
-                            <span className="font-black text-white tracking-tight">{user.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-8 py-6">
-                          <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${user.tier === 'VIP' ? 'bg-purple-900/30 text-purple-400 border-purple-500/30' : user.tier === 'GRATIS' ? 'bg-slate-900/30 text-gray-500 border-slate-500/30' : 'bg-yellow-900/30 text-yellow-500 border-yellow-500/30'} border shadow-sm`}>
-                            {user.tier}
-                          </span>
-                        </td>
-                        <td className="px-8 py-6">
-                          <div className="w-32 bg-slate-900/50 rounded-full h-1.5 mb-2 overflow-hidden border border-white/5">
-                            <div className={`${user.p > 90 ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' : 'bg-primary shadow-[0_0_8px_rgba(43,108,238,0.5)]'} h-full transition-all`} style={{ width: `${user.p}%` }}></div>
-                          </div>
-                          <span className="text-[10px] text-gray-500 font-black uppercase tracking-tighter">{user.d}</span>
-                        </td>
-                        <td className="px-8 py-6 text-right">
-                          <div className="flex justify-end gap-3 opacity-40 group-hover:opacity-100 transition-opacity">
-                             <button className="p-2 text-gray-400 hover:text-primary transition-all bg-slate-800 rounded-xl hover:scale-110" title="Restaurar" onClick={(e) => e.stopPropagation()}>
-                                <RotateCcw className="w-4 h-4" />
-                             </button>
-                             <button className="p-2 text-gray-400 hover:text-red-500 transition-all bg-slate-800 rounded-xl hover:scale-110" title="Restringir" onClick={(e) => e.stopPropagation()}>
-                                <Ban className="w-4 h-4" />
-                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="p-6 bg-slate-900/40 border-t border-white/5 flex justify-center">
-                <button className="text-[10px] text-primary hover:text-white font-black uppercase tracking-[0.2em] flex items-center gap-3 transition-all hover:gap-4">
-                  Recuperar Dataset Expandido
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+            </div>
+
+            {/* Active Registrations Table */}
+            <div className="glass-panel rounded-2xl border border-white/5 overflow-hidden">
+                <div className="p-6 border-b border-white/5 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                    <div>
+                        <h3 className="text-lg font-black text-white uppercase tracking-tight">Registros Activos</h3>
+                        <p className="text-xs text-gray-400">Gestionar cuentas individuales y anular permisos.</p>
+                    </div>
+                    <div className="flex gap-2">
+                        <div className="relative">
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                            <input type="text" placeholder="Filtrar por ID o Usuario..." className="pl-9 pr-4 py-2 bg-black/20 border border-white/10 rounded-lg text-xs text-white focus:outline-none focus:border-primary w-64" />
+                        </div>
+                        <button className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg text-xs font-bold uppercase tracking-wider border border-white/5 transition-colors">Filtros</button>
+                    </div>
+                </div>
+                
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                        <thead>
+                            <tr className="bg-white/5 border-b border-white/5">
+                                <th className="p-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">ID Registro</th>
+                                <th className="p-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Identidad</th>
+                                <th className="p-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Nivel de Acceso</th>
+                                <th className="p-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">Utilización Cuota</th>
+                                <th className="p-4 text-[10px] font-black text-gray-500 uppercase tracking-widest text-right">Ops</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                            {[
+                                { id: '#5892104', user: 'Alex_Reader', tier: 'VIP', quota: 12, max: 100, color: 'bg-purple-500 text-white' },
+                                { id: '#9218401', user: 'BookWorm_99', tier: 'GRATIS', quota: 9, max: 10, color: 'bg-gray-500 text-white', warn: true },
+                                { id: '#1102938', user: 'Elite_Alpha', tier: 'LEYENDA', quota: 5, max: '∞', color: 'bg-yellow-500 text-black' },
+                                { id: '#4810293', user: 'New_User_01', tier: 'GRATIS', quota: 0, max: 10, color: 'bg-gray-500 text-white' },
+                                { id: '#8819203', user: 'MangaLoverX', tier: 'VIP', quota: 45, max: 100, color: 'bg-purple-500 text-white' },
+                            ].map((row, i) => (
+                                <tr key={i} className="hover:bg-white/5 transition-colors group cursor-pointer" onClick={() => setSelectedUserId(row.id)}>
+                                    <td className="p-4 text-xs font-mono text-gray-500 font-bold">{row.id}</td>
+                                    <td className="p-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${row.color.includes('purple') ? 'bg-purple-500/20 text-purple-400' : row.color.includes('yellow') ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-700 text-gray-300'}`}>
+                                                {row.user[0]}
+                                            </div>
+                                            <span className="text-sm font-bold text-white">{row.user}</span>
+                                        </div>
+                                    </td>
+                                    <td className="p-4">
+                                        <span className={`px-2 py-1 rounded text-[10px] font-black uppercase tracking-wider ${
+                                            row.tier === 'VIP' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/20' : 
+                                            row.tier === 'LEYENDA' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/20' : 
+                                            'bg-white/10 text-gray-400 border border-white/10'
+                                        }`}>
+                                            {row.tier}
+                                        </span>
+                                    </td>
+                                    <td className="p-4">
+                                        <div className="w-32">
+                                            <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden mb-1">
+                                                <div 
+                                                    className={`h-full rounded-full ${row.warn ? 'bg-red-500' : 'bg-primary'}`} 
+                                                    style={{ width: typeof row.max === 'number' ? `${(row.quota / row.max) * 100}%` : '5%' }}
+                                                ></div>
+                                            </div>
+                                            <span className={`text-[10px] font-mono ${row.warn ? 'text-red-400 font-bold' : 'text-gray-500'}`}>
+                                                {row.quota} / {row.max}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="p-4 text-right">
+                                        <div className="flex justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <button className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"><RotateCcw className="w-4 h-4" /></button>
+                                            <button className="p-1.5 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-colors"><Ban className="w-4 h-4" /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="p-4 border-t border-white/5 bg-white/5 flex justify-center">
+                    <button className="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest flex items-center gap-2 transition-colors">
+                        Recuperar Dataset Expandido <ArrowRight className="w-3 h-3" />
+                    </button>
+                </div>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Mobile Bottom Floating Action Bar for Admin */}
-      <div className="md:hidden fixed bottom-6 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
-        <div className="glass-panel rounded-full p-1.5 border border-white/10 shadow-2xl bg-[#0f1115]/95 backdrop-blur-xl flex items-center justify-between gap-1 ring-1 ring-black/5">
-          
-          <button 
-             onClick={() => onNavigate && onNavigate('dashboard')} 
-             className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 hover:bg-white/5 rounded-full transition-colors group text-gray-400 active:text-white"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Volver</span>
-          </button>
-          
-          <div className="w-px h-6 bg-white/10"></div>
-
-          {viewOptions.map((option) => (
-             <button
-                key={option.id}
-                onClick={() => setCurrentView(option.id)}
-                className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 rounded-full transition-all relative ${
-                    currentView === option.id 
-                    ? 'text-[#2AABEE]' 
-                    : 'text-gray-400 hover:text-white'
-                }`}
-            >
-                {currentView === option.id && <div className="absolute top-1 w-1 h-1 rounded-full bg-[#2AABEE]"></div>}
-                <option.icon className={`w-4 h-4 ${currentView === option.id ? 'fill-current' : ''}`} />
-            </button>
-          ))}
-
-        </div>
       </div>
     </div>
   );

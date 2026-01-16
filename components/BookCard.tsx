@@ -10,7 +10,7 @@ interface BookCardProps {
 
 export const BookCard: React.FC<BookCardProps> = ({ book, onDownload, compact = false }) => {
   return (
-    <div className="group relative bg-[#121212] rounded-xl overflow-hidden border border-white/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full">
+    <div className="group relative glass-panel rounded-xl overflow-hidden border border-white/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full">
       <div className="absolute top-3 right-3 z-10">
         <span className="bg-black/70 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider border border-white/10">
           {book.format}
