@@ -1,119 +1,429 @@
-import React from 'react';
-import { Search as SearchIcon, Filter, SlidersHorizontal } from 'lucide-react';
-import { BookCard } from '../components/BookCard';
-import { Book } from '../types';
+import React, { useState, useRef, useEffect } from 'react';
+import { 
+  Search as SearchIcon, 
+  Filter, 
+  Star, 
+  Download, 
+  RefreshCw, 
+  ChevronLeft, 
+  ChevronRight, 
+  ArrowUp, 
+  ArrowDownUp, 
+  Calendar, 
+  Clock, 
+  Check,
+  LayoutGrid,
+  List,
+  Book,
+  Hash
+} from 'lucide-react';
+import { Series } from '../types';
+import { SearchScopeModal } from '../components/SearchScopeModal';
 
-const MOCK_BOOKS: Book[] = [
-  {
-    id: '1',
-    title: 'Dune',
-    author: 'Frank Herbert',
-    coverUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1kLRccyldo3q2pAEl2_VimhXKm_8e4kBGEWG_Q7cRSdkvZiD36o-CxThPIb1ICtANI30_DqeW68K06yD5Jnq-l4r5l4MBSQo9v_zHKk3eSekyf1EnedejlPLP3cHiPiv_EN1hu4EovhN0TE41uR5RZBkx2BhAV1c5KUy_bZNA15PPmLPPsXCuPeUbsvaUfAKwwpdlcBk-wVPwSOS8jbBjJL7qh5ZrjfP0EuC2-XaOkxc-K6dOIDC4bQyNEvjVSuPnQUS_--B9IsY',
-    format: 'EPUB',
-    rating: 4.8,
-    size: '1.2 MB',
-    added: '2023-10-01',
-    tags: ['Sci-Fi', 'Classic']
-  },
-  {
-    id: '2',
-    title: 'Clean Code',
-    author: 'Robert C. Martin',
-    coverUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9Y7BGqVQwPcKdwhQ5XQp6FKHq8w3Yfh6nPaq_2Ndbyns4bPVRT7PsKeSw3u_MvhuSSYRxwsRtHV9O1Hg1KVeRQib9StLfUisJDZuoX_eG9Z5vRt06lJABv9jygJ62I-LGqNWRcGaVhQlw9Qp3eoLXAa820bC6imA9Wl-U_5PspUkqpeg-12j08nvyZkzYfG6ec2CodBwKKGOr0MKliC5wED7L_Wp1s7cLYyo3KXXr4yX5sxEsJjWGb4D0CO94MpVLmTE5UtvJRt4',
-    format: 'PDF',
-    rating: 4.9,
-    size: '12 MB',
-    added: '2023-09-15',
-    tags: ['Tech', 'Programming']
-  },
-  {
-    id: '3',
-    title: 'The Name of the Wind',
-    author: 'Patrick Rothfuss',
-    coverUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQra3hNZE6m7GN4bwm6iTtOz6TOLd2jD-DFbRN5ivziu3TzMGcjSaA2BBXMQjQGFdyezxiX0xb-ScrVPqBM5utU1oD0CPRcTAhJgdIWZKqSoxb9l5q_lVkmzNdHfJoW59fVhc__17dSRwctsGgdZr0sM7PcosEfRWid3kcq69h9wkftTUb138oSpSZcsv1pmCtAWTuaW1SB2NEcLXwZasuAkVqwLQSvbzaHs36r1iiWxO33cBCu0hEjozezoehBwLdKZ2l5gDxhBE',
-    format: 'EPUB',
-    rating: 4.9,
-    size: '3.1 MB',
-    added: '2023-10-05',
-    tags: ['Fantasy']
-  },
-  {
-    id: '4',
-    title: 'Neuromancer',
-    author: 'William Gibson',
-    coverUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAnuc18GklGAiY9SOofT1WjOGho6D6b7HfrVbyBnUJE24hatsw2RaXRUxTGAu34xL-BAi5kdmncMlD-vzkwSNQpsENHODzdublXuZrmQN951qGb_UK2_qoVheIuBHHyv4O0j44wjcbuNl0hU7c7vtAPvQyw3LhnYoZnG6lvToZFuXQ2K8A87UhP9HeO3gzPa-qU_tjEHlsFdgYLp9aUlRFAZDZNzw2et0z92S3fULYleoL0Re0p5vUlGBcFJmEKtq4POcaaX1gBoAE',
-    format: 'MOBI',
-    rating: 4.6,
-    size: '1.8 MB',
-    added: '2023-08-20',
-    tags: ['Sci-Fi', 'Cyberpunk']
-  }
-];
+interface SearchProps {
+  onSelectSeries: (series: Series) => void;
+}
 
-export const Search: React.FC = () => {
+// Generate more mock data to demonstrate pagination
+const generateMockSeries = (count: number): Series[] => {
+  return Array.from({ length: count }).map((_, i) => ({
+    id: i.toString(),
+    title: i === 0 ? '5 Centimeters per Second + Children Who Chase Lost Voices' : `Series Title Example ${i + 1}`,
+    author: i === 0 ? 'Makoto Shinkai' : `Author Name ${i + 1}`,
+    coverUrl: i === 0 
+      ? 'https://m.media-amazon.com/images/I/81flX1xZ8DX._SL1500_.jpg' 
+      : `https://picsum.photos/seed/${i}/200/300`,
+    description: 'Description...',
+    genre: 'Drama, Romance',
+    type: i % 2 === 0 ? 'NOVELA LIGERA' : 'NOVELA',
+    rating: (Math.random() * 5),
+    voteCount: Math.floor(Math.random() * 1000),
+    downloadCount: Math.floor(Math.random() * 5000),
+    volumesCount: Math.floor(Math.random() * 20) + 1,
+    status: 'Ongoing',
+    lastUpdated: '2023-10-01',
+    volumes: []
+  }));
+};
+
+const MOCK_SERIES: Series[] = generateMockSeries(45); // 45 items to show pagination
+
+export const Search: React.FC<SearchProps> = ({ onSelectSeries }) => {
+  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
+  const [isScopeModalOpen, setIsScopeModalOpen] = useState(false);
+  const [activeSort, setActiveSort] = useState('a-z');
+  const [selectedScope, setSelectedScope] = useState('TODOS');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(MOCK_SERIES.length / itemsPerPage);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Restore Scroll Position on Mount
+  useEffect(() => {
+    const savedScrollPos = sessionStorage.getItem('search_scroll_pos');
+    if (savedScrollPos) {
+      const mainContainer = document.querySelector('main');
+      if (mainContainer) {
+        // Small timeout to ensure DOM is ready
+        setTimeout(() => {
+            mainContainer.scrollTop = parseInt(savedScrollPos);
+        }, 0);
+      }
+    }
+  }, []);
+
+  const handleSelectSeries = (series: Series) => {
+      // Save Scroll Position before navigating away
+      const mainContainer = document.querySelector('main');
+      if (mainContainer) {
+          sessionStorage.setItem('search_scroll_pos', mainContainer.scrollTop.toString());
+      }
+      onSelectSeries(series);
+  };
+
+  const scrollToTop = () => {
+    // Try to scroll the main layout container if possible, otherwise window
+    const mainContainer = document.querySelector('main');
+    if (mainContainer) {
+      mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Scroll to top when page changes (only if not restoring initial state)
+  useEffect(() => {
+     const mainContainer = document.querySelector('main');
+     if (mainContainer && sessionStorage.getItem('search_scroll_pos') === null) {
+        mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+     }
+  }, [currentPage]);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+        setCurrentPage(prev => prev + 1);
+        scrollToTop();
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+        setCurrentPage(prev => prev - 1);
+        scrollToTop();
+    }
+  };
+
+  const currentSeries = MOCK_SERIES.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const sortOptions = [
+    { id: 'a-z', label: 'A-Z', icon: null },
+    { id: 'added', label: 'AÑADIDO', icon: Calendar },
+    { id: 'updated', label: 'ACTUALIZADO', icon: Clock },
+    { id: 'downloads', label: 'DESCARGAS', icon: Download },
+    { id: 'rating', label: 'VALORACIÓN', icon: Star },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Search Header */}
-      <div className="bg-surface-highlight border border-white/5 rounded-2xl p-6 sticky top-0 z-20 shadow-xl shadow-black/50">
-        <div className="relative w-full max-w-3xl mx-auto mb-6">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <SearchIcon className="text-gray-400 w-5 h-5" />
-          </div>
-          <input
-            type="text"
-            className="block w-full pl-12 pr-24 py-4 rounded-xl border border-white/10 bg-[#0A0A0A] text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent shadow-inner transition-all text-lg"
-            placeholder="Search by title, author, or ISBN..."
-          />
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <span className="inline-flex items-center px-2 py-1 border border-white/10 rounded text-xs font-mono text-gray-500">
-              FTS5
-            </span>
-          </div>
-        </div>
+    <div className="flex flex-col h-full animate-in fade-in duration-300 relative" ref={scrollContainerRef}>
+      
+      <SearchScopeModal 
+        isOpen={isScopeModalOpen} 
+        onClose={() => setIsScopeModalOpen(false)} 
+        selectedScope={selectedScope}
+        onSelectScope={setSelectedScope}
+      />
 
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white text-sm font-medium shadow-md shadow-primary/20 hover:bg-blue-600 transition-colors">
-            <SlidersHorizontal className="w-4 h-4" /> All Filters
-          </button>
-          <div className="h-6 w-px bg-white/10 mx-2"></div>
-          {['Genre: Sci-Fi', 'Format: EPUB', 'Rating: 4.5+', 'Lang: EN'].map((filter) => (
-            <button key={filter} className="px-4 py-2 rounded-full bg-[#0A0A0A] border border-white/10 text-gray-400 text-sm hover:border-primary hover:text-primary transition-colors">
-              {filter}
-            </button>
-          ))}
+      {/* Search Header - Floating Glass (Desktop/Tablet) */}
+      <div className="sticky top-0 z-30 p-4">
+        <div className="glass-panel rounded-2xl p-4 border border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl">
+          <div className="flex flex-row gap-2 sm:gap-4 items-center justify-between">
+            <div className="relative w-full max-w-xl group flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <SearchIcon className="text-gray-400 w-5 h-5 group-focus-within:text-[#2AABEE] transition-colors" />
+              </div>
+              <input 
+                className="block w-full pl-10 pr-24 py-3 rounded-xl border border-white/5 bg-black/20 text-white placeholder-gray-500 focus:ring-1 focus:ring-[#2AABEE] focus:border-[#2AABEE] focus:bg-black/40 text-sm transition-all shadow-inner" 
+                placeholder="Buscar..." 
+                type="text"
+              />
+              <div className="absolute inset-y-0 right-1 flex items-center">
+                <button 
+                    onClick={() => setIsScopeModalOpen(true)}
+                    className="px-3 py-1.5 rounded-lg bg-[#0f1318] hover:bg-[#2AABEE]/10 border border-white/10 hover:border-[#2AABEE]/30 text-[#2AABEE] text-[10px] font-black uppercase tracking-widest transition-all"
+                >
+                    {selectedScope}
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {/* View Toggles */}
+                <div className="bg-black/20 p-1 rounded-lg border border-white/5 flex shrink-0">
+                    <button 
+                        onClick={() => setViewMode('list')} 
+                        className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-white'}`}
+                        title="Vista de Lista"
+                    >
+                        <List className="w-4 h-4" />
+                    </button>
+                    <button 
+                        onClick={() => setViewMode('grid')} 
+                        className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-white'}`}
+                        title="Vista de Cuadrícula"
+                    >
+                        <LayoutGrid className="w-4 h-4" />
+                    </button>
+                </div>
+
+                {/* Desktop Sort Controls (Hidden on Mobile) */}
+                <div className="hidden md:flex items-center gap-3">
+                  <div className="h-6 w-px bg-white/10 mx-1"></div>
+                  <div className="flex bg-black/20 p-1 rounded-lg border border-white/5">
+                    <button className="px-3 py-1.5 rounded-md bg-white/10 text-white shadow-sm text-xs font-bold transition-all">Título</button>
+                    <button className="px-3 py-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/5 text-xs font-medium transition-all">Reciente</button>
+                    <button className="px-3 py-1.5 rounded-md text-gray-400 hover:text-white hover:bg-white/5 text-xs font-medium transition-all">Valoración</button>
+                  </div>
+                  <button className="p-2 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition-colors border border-transparent hover:border-primary/20">
+                    <Filter className="w-5 h-5" />
+                  </button>
+                </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Results Grid */}
-      <div>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-            <span className="text-primary">⚡</span>
-            Results
-            <span className="ml-2 px-2 py-0.5 rounded text-xs bg-white/5 text-gray-400 font-mono">0.024s</span>
-          </h2>
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span>Sort by:</span>
-            <select className="bg-transparent border-none text-white font-medium focus:ring-0 cursor-pointer">
-              <option>Relevance</option>
-              <option>Newest</option>
-              <option>Rating</option>
-            </select>
-          </div>
-        </div>
+      {/* List Content */}
+      <div className="flex-1 px-4 pb-32 md:pb-6">
+        <div className="max-w-7xl mx-auto space-y-3">
+            
+            {viewMode === 'list' ? (
+                // LIST VIEW
+                currentSeries.map((series) => (
+                    <div 
+                      key={series.id} 
+                      onClick={() => handleSelectSeries(series)}
+                      className="group flex gap-4 p-3 rounded-lg bg-[#12171c] hover:bg-[#1a2026] border border-white/5 hover:border-white/10 transition-all duration-200 cursor-pointer relative overflow-hidden"
+                    >
+                      {/* Left: Cover Image */}
+                      <div className="relative shrink-0 w-[85px] sm:w-[100px] aspect-[2/3] shadow-lg rounded-md overflow-hidden bg-slate-800">
+                        <img 
+                          alt={series.title}
+                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" 
+                          src={series.coverUrl}
+                        />
+                      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {MOCK_BOOKS.map(book => (
-            <BookCard key={book.id} book={book} onDownload={() => {}} />
-          ))}
+                      {/* Right: Details */}
+                      <div className="flex flex-col flex-1 min-w-0 py-0.5">
+                        {/* Title */}
+                        <h3 className="text-base sm:text-lg font-bold text-white leading-tight mb-1 line-clamp-2 sm:line-clamp-1">
+                          {series.title}
+                        </h3>
+                        
+                        {/* Author */}
+                        <p className="text-sm text-[#2AABEE] font-medium mb-1.5 truncate">
+                          {series.author}
+                        </p>
+
+                        {/* Genres */}
+                        <p className="text-xs text-gray-500 mb-auto line-clamp-1">
+                          <span className="font-bold text-gray-600 uppercase tracking-wide mr-1">GÉNEROS:</span>
+                          {series.genre}
+                        </p>
+
+                        {/* Meta Info Row */}
+                        <div className="flex flex-wrap items-center gap-3 mt-3 mb-2">
+                            <span className="text-[10px] sm:text-xs font-bold text-gray-300 uppercase tracking-widest">
+                                {series.volumesCount} {series.volumesCount === 1 ? 'VOLUMEN' : 'VOLÚMENES'}
+                            </span>
+                            
+                            {series.type && (
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#004d40] text-[#4db6ac] uppercase tracking-wider">
+                                    {series.type}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Stats Row */}
+                        <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
+                            <div className="flex items-center gap-1 text-yellow-500">
+                                <Star className="w-3.5 h-3.5 fill-current" />
+                                <span>{series.rating.toFixed(1)} ({series.voteCount || 0})</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-[#2AABEE]">
+                                <Download className="w-3.5 h-3.5" />
+                                <span>{series.downloadCount || 0}</span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                ))
+            ) : (
+                // GRID VIEW
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {currentSeries.map((series) => (
+                        <div 
+                            key={series.id}
+                            onClick={() => handleSelectSeries(series)}
+                            className="group relative bg-[#12171c] dark:bg-surface-dark rounded-2xl overflow-hidden border border-white/5 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-[#2AABEE]/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer"
+                        >
+                            {/* Format Badge (Top Right) */}
+                            <div className="absolute top-3 right-3 z-10">
+                                <span className="bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">
+                                    {series.type || 'EPUB'}
+                                </span>
+                            </div>
+
+                            {/* Image Container */}
+                            <div className="relative aspect-[2/3] overflow-hidden bg-slate-800">
+                                <img 
+                                    alt={series.title} 
+                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" 
+                                    src={series.coverUrl}
+                                />
+                                {/* Bottom Gradient & Text Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80"></div>
+                                <div className="absolute bottom-4 left-4 right-4">
+                                    <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md">
+                                        {series.title}
+                                    </h3>
+                                    <p className="text-gray-300 text-xs font-medium mt-1 truncate">
+                                        {series.author}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Details Container */}
+                            <div className="p-4 flex flex-col flex-1">
+                                {/* Top Row: Genre & Rating */}
+                                <div className="flex items-center justify-between gap-2 mb-3">
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-[#2AABEE] border border-primary/20 truncate max-w-[70%]">
+                                        {series.genre?.split(',')[0]}
+                                    </span>
+                                    <div className="flex items-center gap-1 text-yellow-500 text-xs shrink-0">
+                                        <Star className="w-3.5 h-3.5 fill-current" />
+                                        <span className="font-bold text-gray-200">{series.rating.toFixed(1)}</span>
+                                    </div>
+                                </div>
+
+                                {/* Stats Grid */}
+                                <div className="grid grid-cols-2 gap-2 text-[10px] text-gray-500 mb-4 font-mono">
+                                    <div className="flex items-center gap-1.5" title="Volúmenes">
+                                        <Book className="w-3.5 h-3.5" />
+                                        <span>{series.volumesCount} Vols</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5" title="Actualizado">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span>{series.lastUpdated || 'Hoy'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Footer: Publisher & Download */}
+                                <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
+                                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                                        {series.status === 'Ongoing' ? 'EN EMISIÓN' : 'FINALIZADO'}
+                                    </span>
+                                    <button className="p-2 rounded-full bg-white/5 text-gray-400 hover:bg-[#2AABEE] hover:text-white transition-colors">
+                                        <Download className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            
+            {/* Pagination Info */}
+            <div className="text-center py-4 text-xs text-gray-500 font-medium">
+                Página {currentPage} de {totalPages} • {MOCK_SERIES.length} Resultados
+            </div>
         </div>
+      </div>
+      
+      {/* Mobile Catalog Bottom Bar (Floating above global nav) */}
+      <div className="md:hidden fixed bottom-24 left-4 right-4 z-40 flex flex-col gap-3">
         
-        <div className="mt-12 flex justify-center pb-10">
-          <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-highlight border border-white/10 text-gray-300 hover:bg-white/5 transition-all font-medium">
-             Load more results
-          </button>
+        {/* Sort Options Row (Collapsible) */}
+        {isSortMenuOpen && (
+          <div className="glass-panel rounded-2xl p-2 border border-white/10 shadow-2xl bg-[#0f1115]/95 backdrop-blur-xl animate-in slide-in-from-bottom-2 fade-in duration-200">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              {sortOptions.map((option) => {
+                 const isActive = activeSort === option.id;
+                 return (
+                  <button 
+                    key={option.id}
+                    onClick={() => setActiveSort(option.id)}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${
+                      isActive 
+                        ? 'bg-[#2AABEE] text-white border-[#2AABEE] shadow-lg shadow-blue-500/20' 
+                        : 'bg-white/5 text-gray-400 border-transparent hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    {option.icon && <option.icon className="w-3 h-3" />}
+                    {option.label}
+                  </button>
+                 );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Main Controls Row */}
+        <div className="glass-panel rounded-full p-1 border border-white/10 shadow-2xl bg-[#0f1115]/90 backdrop-blur-md flex items-center justify-between">
+            {/* Previous */}
+            <button 
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-l-full hover:bg-white/5 active:bg-white/10 transition-colors group ${currentPage === 1 ? 'opacity-30 cursor-not-allowed' : 'text-gray-400 active:text-white'}`}
+            >
+              <ChevronLeft className="w-4 h-4 mb-0.5 group-active:-translate-x-1 transition-transform" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Anterior</span>
+            </button>
+            
+            <div className="w-px h-8 bg-white/5"></div>
+
+            {/* Sort Toggle */}
+            <button 
+              onClick={() => setIsSortMenuOpen(!isSortMenuOpen)}
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-white/5 transition-colors group relative ${isSortMenuOpen ? 'text-[#2AABEE]' : 'text-gray-300'}`}
+            >
+              <div className={`absolute inset-x-2 bottom-0 h-0.5 rounded-t-full bg-[#2AABEE] transition-all duration-300 ${isSortMenuOpen ? 'opacity-100' : 'opacity-0'}`}></div>
+              <ArrowDownUp className="w-4 h-4 mb-0.5" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Ordenar</span>
+            </button>
+            
+            <div className="w-px h-8 bg-white/5"></div>
+
+            {/* Scroll Top */}
+            <button 
+              onClick={scrollToTop}
+              className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-white/5 text-gray-400 active:text-white transition-colors group"
+            >
+              <ArrowUp className="w-4 h-4 mb-0.5 group-active:-translate-y-1 transition-transform" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Subir</span>
+            </button>
+            
+            <div className="w-px h-8 bg-white/5"></div>
+
+            {/* Next */}
+            <button 
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-r-full hover:bg-white/5 active:bg-white/10 transition-colors group ${currentPage === totalPages ? 'opacity-30 cursor-not-allowed' : 'text-gray-400 active:text-white'}`}
+            >
+              <ChevronRight className="w-4 h-4 mb-0.5 group-active:translate-x-1 transition-transform" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Siguiente</span>
+            </button>
         </div>
       </div>
+
     </div>
   );
 };
