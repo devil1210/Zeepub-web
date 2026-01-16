@@ -211,7 +211,7 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
                     <div 
                       key={series.id} 
                       onClick={() => handleSelectSeries(series)}
-                      className="group flex gap-4 p-3 rounded-lg glass-panel bg-white/50 dark:bg-black/20 hover:bg-white/80 dark:hover:bg-white/5 transition-all duration-200 cursor-pointer relative overflow-hidden border border-black/5 dark:border-white/5"
+                      className="group flex gap-4 p-3 rounded-lg bg-[#0d1117]/80 hover:bg-[#161b22] transition-all duration-200 cursor-pointer relative overflow-hidden border border-white/5"
                     >
                       {/* Left: Cover Image */}
                       <div className="relative shrink-0 w-[85px] sm:w-[100px] aspect-[2/3] shadow-lg rounded-md overflow-hidden bg-slate-800">
@@ -224,14 +224,14 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
 
                       {/* Right: Details */}
                       <div className="flex flex-col flex-1 min-w-0 py-0.5">
-                        {/* Title */}
+                        {/* Title - Fixed to White as requested */}
                         <div className="flex justify-between items-start gap-2">
-                            <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight mb-1 line-clamp-2 sm:line-clamp-1">
+                            <h3 className="text-base sm:text-lg font-bold text-white leading-tight mb-1 line-clamp-2 sm:line-clamp-1">
                             {series.title}
                             </h3>
                             <button 
                                 onClick={(e) => { e.stopPropagation(); /* Add logic */ }}
-                                className="p-1.5 rounded-full bg-black/5 dark:bg-white/5 hover:bg-primary/20 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors shrink-0"
+                                className="p-1.5 rounded-full bg-white/5 hover:bg-[#2AABEE]/20 text-gray-400 hover:text-[#2AABEE] transition-colors shrink-0"
                             >
                                 <PlusCircle className="w-4 h-4" />
                             </button>
@@ -243,31 +243,32 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
                         </p>
 
                         {/* Genres */}
-                        <p className="text-xs text-gray-500 dark:text-gray-500 mb-auto line-clamp-1">
-                          <span className="font-bold text-gray-700 dark:text-gray-600 uppercase tracking-wide mr-1">GÉNEROS:</span>
+                        <p className="text-xs text-gray-500 mb-auto line-clamp-1">
+                          <span className="font-bold text-gray-600 uppercase tracking-wide mr-1">GÉNEROS:</span>
                           {series.genre}
                         </p>
 
                         {/* Meta Info Row */}
                         <div className="flex flex-wrap items-center gap-3 mt-3 mb-2">
-                            <span className="text-[10px] sm:text-xs font-bold text-gray-400 dark:text-gray-300 uppercase tracking-widest">
+                            <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest">
                                 {series.volumesCount} {series.volumesCount === 1 ? 'VOLUMEN' : 'VOLÚMENES'}
                             </span>
                             
                             {series.type && (
-                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#004d40] text-[#4db6ac] uppercase tracking-wider">
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#004d40] text-[#4db6ac] uppercase tracking-wider border border-[#00695c]/30">
                                     {series.type}
                                 </span>
                             )}
                         </div>
 
                         {/* Stats Row */}
-                        <div className="flex items-center gap-4 text-xs font-bold text-gray-600 dark:text-gray-500">
-                            <div className="flex items-center gap-1 text-yellow-500">
+                        <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
+                            <div className="flex items-center gap-1.5 text-yellow-500">
                                 <Star className="w-3.5 h-3.5 fill-current" />
-                                <span>{series.rating.toFixed(1)} ({series.voteCount || 0})</span>
+                                <span className="text-gray-300">{series.rating.toFixed(1)}</span>
+                                <span className="text-gray-600 font-normal">({series.voteCount || 0})</span>
                             </div>
-                            <div className="flex items-center gap-1 text-[#2AABEE]">
+                            <div className="flex items-center gap-1.5 text-[#2AABEE]">
                                 <Download className="w-3.5 h-3.5" />
                                 <span>{series.downloadCount || 0}</span>
                             </div>
@@ -282,7 +283,7 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
                         <div 
                             key={series.id}
                             onClick={() => handleSelectSeries(series)}
-                            className="group relative glass-panel rounded-2xl overflow-hidden hover:bg-white/5 shadow-sm hover:shadow-xl hover:shadow-[#2AABEE]/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer bg-white/10 dark:bg-black/20"
+                            className="group relative glass-panel rounded-2xl overflow-hidden hover:bg-white/5 shadow-sm hover:shadow-xl hover:shadow-[#2AABEE]/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer bg-black/20"
                         >
                             {/* Format Badge (Top Right) */}
                             <div className="absolute top-3 right-3 z-10">
@@ -301,7 +302,6 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
                                 {/* Bottom Gradient & Text Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90"></div>
                                 <div className="absolute bottom-4 left-4 right-4">
-                                    {/* Added Text Shadow for "Adaptive" look ensuring readability on any cover */}
                                     <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                                         {series.title}
                                     </h3>
@@ -312,40 +312,40 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
                             </div>
 
                             {/* Details Container */}
-                            <div className="p-4 flex flex-col flex-1">
+                            <div className="p-4 flex flex-col flex-1 bg-[#0d1117]">
                                 {/* Top Row: Genre & Rating */}
                                 <div className="flex items-center justify-between gap-2 mb-3">
-                                    <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-[#2AABEE] border border-primary/20 truncate max-w-[70%]">
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#2AABEE]/10 text-[#2AABEE] border border-[#2AABEE]/20 truncate max-w-[70%]">
                                         {series.genre?.split(',')[0]}
                                     </span>
                                     <div className="flex items-center gap-1 text-yellow-500 text-xs shrink-0">
                                         <Star className="w-3.5 h-3.5 fill-current" />
-                                        <span className="font-bold text-gray-700 dark:text-gray-200">{series.rating.toFixed(1)}</span>
+                                        <span className="font-bold text-gray-200">{series.rating.toFixed(1)}</span>
                                     </div>
                                 </div>
 
                                 {/* Stats Grid */}
-                                <div className="grid grid-cols-2 gap-2 text-[10px] text-gray-600 dark:text-gray-500 mb-4 font-mono">
+                                <div className="grid grid-cols-2 gap-2 text-[10px] text-gray-500 mb-4 font-mono">
                                     <div className="flex items-center gap-1.5" title="Volúmenes">
                                         <Book className="w-3.5 h-3.5" />
                                         <span>{series.volumesCount} Vols</span>
                                     </div>
                                     <div className="flex items-center gap-1.5" title="Actualizado">
                                         <Clock className="w-3.5 h-3.5" />
-                                        <span>{series.lastUpdated || 'Hoy'}</span>
+                                        <span>Hoy</span>
                                     </div>
                                 </div>
 
                                 {/* Footer: Publisher & Download */}
-                                <div className="mt-auto pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between">
+                                <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
                                     <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
                                         {series.status === 'Ongoing' ? 'EN EMISIÓN' : 'FINALIZADO'}
                                     </span>
                                     <div className="flex gap-2">
-                                        <button className="p-2 rounded-full bg-black/5 dark:bg-white/5 text-gray-500 dark:text-gray-400 hover:bg-[#2AABEE] hover:text-white transition-colors" onClick={(e) => { e.stopPropagation(); }}>
+                                        <button className="p-2 rounded-full bg-white/5 text-gray-400 hover:bg-[#2AABEE] hover:text-white transition-colors" onClick={(e) => { e.stopPropagation(); }}>
                                             <PlusCircle className="w-4 h-4" />
                                         </button>
-                                        <button className="p-2 rounded-full bg-black/5 dark:bg-white/5 text-gray-500 dark:text-gray-400 hover:bg-[#2AABEE] hover:text-white transition-colors">
+                                        <button className="p-2 rounded-full bg-white/5 text-gray-400 hover:bg-[#2AABEE] hover:text-white transition-colors">
                                             <Download className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -363,10 +363,8 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
         </div>
       </div>
       
-      {/* Mobile Catalog Bottom Bar (Floating above global nav) */}
+      {/* Mobile Catalog Bottom Bar */}
       <div className="md:hidden fixed bottom-6 left-4 right-4 z-40 flex flex-col gap-3">
-        
-        {/* Sort Options Row (Collapsible) */}
         {isSortMenuOpen && (
           <div className="glass-panel rounded-2xl p-2 border border-white/10 shadow-2xl bg-[#0f1115]/95 backdrop-blur-xl animate-in slide-in-from-bottom-2 fade-in duration-200">
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -391,9 +389,7 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
           </div>
         )}
 
-        {/* Main Controls Row */}
         <div className="glass-panel rounded-full p-1 border border-white/10 shadow-2xl bg-[#0f1115]/90 backdrop-blur-md flex items-center justify-between">
-            {/* Previous */}
             <button 
               onClick={handlePrevPage}
               disabled={currentPage === 1}
@@ -405,7 +401,6 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
             
             <div className="w-px h-8 bg-white/5"></div>
 
-            {/* Sort Toggle */}
             <button 
               onClick={() => setIsSortMenuOpen(!isSortMenuOpen)}
               className={`flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-white/5 transition-colors group relative ${isSortMenuOpen ? 'text-[#2AABEE]' : 'text-gray-300'}`}
@@ -417,7 +412,6 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
             
             <div className="w-px h-8 bg-white/5"></div>
 
-            {/* Home (Was Scroll Top) */}
             <button 
               onClick={() => onNavigate && onNavigate('dashboard')}
               className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-white/5 text-gray-400 active:text-white transition-colors group"
@@ -428,7 +422,6 @@ export const Search: React.FC<SearchProps> = ({ onSelectSeries, onNavigate }) =>
             
             <div className="w-px h-8 bg-white/5"></div>
 
-            {/* Next */}
             <button 
               onClick={handleNextPage}
               disabled={currentPage === totalPages}

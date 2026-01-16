@@ -22,7 +22,8 @@ import {
   Star,
   Download,
   Home,
-  Reply
+  Reply,
+  Check
 } from 'lucide-react';
 import { Volume, Series } from '../types';
 import { ReportIssueModal } from '../components/ReportIssueModal';
@@ -37,12 +38,18 @@ interface BookDetailProps {
 
 export const BookDetail: React.FC<BookDetailProps> = ({ volume, series, onBack, onSearch, onNavigate }) => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [hasDownloaded, setHasDownloaded] = useState(false);
 
   // Helper to handle safe search navigation
   const handleSearch = (term?: string, type?: string) => {
     if (term && onSearch) {
       onSearch(term, type);
     }
+  };
+
+  const handleDownload = () => {
+    // Simulate download process
+    setHasDownloaded(true);
   };
 
   // Fallback data if fields are missing (mocking for display purposes based on screenshots)
@@ -113,9 +120,21 @@ export const BookDetail: React.FC<BookDetailProps> = ({ volume, series, onBack, 
 
                      {/* Actions (Desktop mainly) */}
                      <div className="hidden md:flex flex-col gap-3">
-                        <button className="w-full py-3.5 bg-[#2AABEE] hover:bg-[#2AABEE]/90 text-white text-sm font-black uppercase tracking-widest rounded-xl shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                            <ArrowDownToLine className="w-5 h-5" />
-                            Descargar
+                        <button 
+                            onClick={handleDownload}
+                            className={`w-full py-3.5 text-white text-sm font-black uppercase tracking-widest rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2 ${hasDownloaded ? 'bg-green-600 hover:bg-green-700 shadow-green-500/20' : 'bg-[#2AABEE] hover:bg-[#2AABEE]/90 shadow-blue-500/20'}`}
+                        >
+                            {hasDownloaded ? (
+                                <>
+                                    <Check className="w-5 h-5" />
+                                    Descargado
+                                </>
+                            ) : (
+                                <>
+                                    <ArrowDownToLine className="w-5 h-5" />
+                                    Descargar
+                                </>
+                            )}
                         </button>
                         <div className="grid grid-cols-2 gap-3">
                            <button className="py-3.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-white rounded-xl border border-black/5 dark:border-white/10 transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
@@ -363,11 +382,25 @@ export const BookDetail: React.FC<BookDetailProps> = ({ volume, series, onBack, 
             
             <div className="w-px h-8 bg-black/10 dark:bg-white/5"></div>
 
-             {/* Download Dummy */}
-             <button 
-              className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-r-full hover:bg-black/5 dark:hover:bg-white/5 active:bg-black/10 dark:active:bg-white/10 transition-colors group text-gray-500 dark:text-gray-400 active:text-black dark:active:text-white"
+             {/* Rate (Only if downloaded) - ADDED, not replaced */}
+             {hasDownloaded && (
+                <>
+                  <button 
+                    className="flex-1 flex flex-col items-center justify-center py-2.5 px-2 hover:bg-black/5 dark:hover:bg-white/5 active:bg-black/10 dark:active:bg-white/10 transition-colors group text-yellow-500 active:text-yellow-600"
+                  >
+                    <Star className="w-4 h-4 mb-0.5 fill-current" />
+                    <span className="text-[9px] font-black uppercase tracking-widest">Valorar</span>
+                  </button>
+                  <div className="w-px h-8 bg-black/10 dark:bg-white/5"></div>
+                </>
+             )}
+
+             {/* Download - Always Available (with status change) */}
+            <button 
+              onClick={handleDownload}
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 px-2 rounded-r-full hover:bg-black/5 dark:hover:bg-white/5 active:bg-black/10 dark:active:bg-white/10 transition-colors group ${hasDownloaded ? 'text-green-600 dark:text-green-500' : 'text-gray-500 dark:text-gray-400 active:text-black dark:active:text-white'}`}
             >
-              <Download className="w-4 h-4 mb-0.5" />
+              {hasDownloaded ? <Check className="w-4 h-4 mb-0.5" /> : <Download className="w-4 h-4 mb-0.5" />}
               <span className="text-[9px] font-black uppercase tracking-widest">Descargar</span>
             </button>
         </div>
