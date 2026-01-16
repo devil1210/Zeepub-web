@@ -5,8 +5,8 @@ import {
   Library, 
   Settings, 
   ShieldCheck, 
-  BookOpen,
-  LogOut,
+  BookOpen, 
+  LogOut, 
   ChevronRight
 } from 'lucide-react';
 
@@ -17,7 +17,7 @@ interface LayoutProps {
   showMobileBottomNav?: boolean;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange, showMobileBottomNav = true }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange, showMobileBottomNav = false }) => {
   
   const navItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Inicio' },

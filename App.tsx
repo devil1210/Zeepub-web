@@ -179,15 +179,11 @@ const AppContent: React.FC = () => {
     return <Reader onClose={() => setIsReading(false)} />;
   }
 
-  // Determine if we show bottom nav (only on root tabs)
-  const isRootTab = !currentState.series && !currentState.volume;
-  const showMobileBottomNav = isRootTab && ['dashboard', 'library', 'requests', 'admin'].includes(currentState.tab);
-
   return (
     <Layout 
       activeTab={currentState.tab} 
       onTabChange={onNavigate}
-      showMobileBottomNav={showMobileBottomNav}
+      showMobileBottomNav={false}
     >
       {renderContent()}
     </Layout>
